@@ -15,7 +15,7 @@ class GameInputError {
 export class Game extends Context.Tag("Game")<
 	Game,
 	{
-		readonly getComputerMove: () => Effect.Effect<Move, never, never>;
+		readonly getComputerMove: Effect.Effect<Move, never, never>;
 		readonly getPlayerMove: () => Effect.Effect<
 			Move,
 			CLIError | GameInputError,

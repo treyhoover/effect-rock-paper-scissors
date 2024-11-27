@@ -9,7 +9,7 @@ export class MoveService extends Context.Tag("MoveService")<
 	{
 		rank: (value: Move) => number;
 		isValid: (value: unknown) => value is Move;
-		readonly getRandomMove: () => Effect.Effect<Move, never>;
+		readonly getRandomMove: Effect.Effect<Move, never>;
 	}
 >() {}
 
@@ -20,10 +20,7 @@ export const MoveLive = Layer.effect(
 			rank: (value: Move) => moves.indexOf(value),
 			isValid: (value: unknown): value is Move =>
 				Schema.decodeUnknownOption(moveSchema)(value).pipe(Option.isSome),
-			getRandomMove: () =>
-				Effect.gen(function* () {
-					return yield* Random.choice(moves);
-				}),
+			getRandomMove: Random.choice(moves),
 		};
 	}),
 );
