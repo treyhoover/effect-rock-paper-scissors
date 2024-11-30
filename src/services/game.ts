@@ -49,7 +49,7 @@ export const GameLive = Layer.effect(
 						return yield* Effect.fail(new GameInputError());
 					}
 
-					return yield* Effect.succeed(input);
+					return input;
 				}),
 
 			getResult: (playerMove: Move, computerMove: Move) =>
@@ -58,13 +58,11 @@ export const GameLive = Layer.effect(
 					const cpuRank = moveService.rank(computerMove);
 					const diff = Math.abs(pRank - cpuRank);
 
-					const res = Match.value(diff).pipe(
+					return Match.value(diff).pipe(
 						Match.when(0, () => Result.Draw),
 						Match.when(1, () => (pRank > cpuRank ? Result.Win : Result.Lose)),
 						Match.orElse(() => (pRank > cpuRank ? Result.Lose : Result.Win)),
 					);
-
-					return yield* Effect.succeed(res);
 				}),
 		};
 	}),

@@ -1,4 +1,4 @@
-import { Context, Effect, Layer, Option, Random, Schema } from "effect";
+import { Context, Effect, Layer, Random, Schema } from "effect";
 
 const moves = ["rock", "paper", "scissors"] as const;
 const moveSchema = Schema.Literal(...moves);
@@ -17,9 +17,8 @@ export const MoveLive = Layer.effect(
 	MoveService,
 	Effect.sync(() => {
 		return {
-			rank: (value: Move) => moves.indexOf(value),
-			isValid: (value: unknown): value is Move =>
-				Schema.decodeUnknownOption(moveSchema)(value).pipe(Option.isSome),
+			rank: (value) => moves.indexOf(value),
+			isValid: (value) => Schema.is(moveSchema)(value),
 			getRandomMove: Random.choice(moves),
 		};
 	}),
