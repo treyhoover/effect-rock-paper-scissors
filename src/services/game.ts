@@ -1,5 +1,5 @@
-import { Context, Effect, Layer, Match } from "effect";
-import { CLI, type CLIError } from "./cli";
+import { Effect, Match } from "effect";
+import { CLIService } from "./cli";
 import { MoveService, type Move } from "./move";
 
 enum Result {
@@ -12,30 +12,13 @@ class GameInputError {
 	readonly _tag = "GameInputError";
 }
 
-export class Game extends Context.Tag("Game")<
-	Game,
-	{
-		readonly getComputerMove: Effect.Effect<Move, never, never>;
-		readonly getPlayerMove: () => Effect.Effect<
-			Move,
-			CLIError | GameInputError,
-			never
-		>;
-		readonly getResult: (
-			playerMove: Move,
-			computerMove: Move,
-		) => Effect.Effect<Result, never, never>;
-	}
->() {}
-
-export const GameLive = Layer.effect(
-	Game,
-	Effect.gen(function* () {
-		const cli = yield* CLI;
+export class GameService extends Effect.Service<GameService>()("app/Game", {
+	effect: Effect.gen(function* () {
+		const cli = yield* CLIService;
 		const moveService = yield* MoveService;
 
 		return {
-			getComputerMove: moveService.getRandomMove,
+			getComputerMove: () => moveService.getRandomMove,
 			getPlayerMove: () =>
 				Effect.gen(function* () {
 					const input = yield* cli.prompt(
@@ -66,4 +49,5 @@ export const GameLive = Layer.effect(
 				}),
 		};
 	}),
-);
+	dependencies: [CLIService.Default, MoveService.Default],
+}) {}

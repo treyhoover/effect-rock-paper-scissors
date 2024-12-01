@@ -1,15 +1,13 @@
-import { Effect, Layer, Schedule } from "effect";
-import { NodeRuntime, NodeTerminal } from "@effect/platform-node";
-import { CLILive } from "./services/cli.js";
-import { Game, GameLive } from "./services/game.js";
-import { MoveLive } from "./services/move.js";
+import { Effect, Schedule } from "effect";
+import { NodeRuntime } from "@effect/platform-node";
+import { GameService } from "./services/game.js";
 
 const program = Effect.gen(function* () {
-	const game = yield* Game;
+	const game = yield* GameService;
 	const playerMove = yield* game
 		.getPlayerMove()
 		.pipe(Effect.retry(Schedule.forever));
-	const computerMove = yield* game.getComputerMove;
+	const computerMove = yield* game.getComputerMove();
 	const result = yield* game.getResult(playerMove, computerMove);
 
 	console.log(`You played: ${playerMove}`);
@@ -17,12 +15,6 @@ const program = Effect.gen(function* () {
 	console.log(`Result: ${result}`);
 });
 
-const MainLive = GameLive.pipe(
-	Layer.provide(MoveLive),
-	Layer.provide(CLILive),
-	Layer.provide(NodeTerminal.layer),
-);
-
-const runnable = Effect.provide(program, MainLive);
+const runnable = Effect.provide(program, GameService.Default);
 
 NodeRuntime.runMain(runnable);
