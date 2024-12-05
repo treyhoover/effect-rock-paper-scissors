@@ -3,11 +3,11 @@
 	"compilerOptions": {
 		"strict": true,
 		"moduleDetection": "force",
-		"composite": true,
+		"composite": false,
 		"downlevelIteration": true,
 		"resolveJsonModule": true,
 		"esModuleInterop": false,
-		"declaration": true,
+		"declaration": false,
 		"skipLibCheck": true,
 		"exactOptionalPropertyTypes": true,
 		"emitDecoratorMetadata": false,

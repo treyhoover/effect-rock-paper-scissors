@@ -4,7 +4,7 @@ import { MoveService, type Move } from "./move";
 
 enum Result {
 	Win = "win",
-	Lose = "lose",
+	Loss = "loss",
 	Draw = "draw",
 }
 
@@ -43,8 +43,8 @@ export class GameService extends Effect.Service<GameService>()("app/Game", {
 
 					return Match.value(diff).pipe(
 						Match.when(0, () => Result.Draw),
-						Match.when(1, () => (pRank > cpuRank ? Result.Win : Result.Lose)),
-						Match.orElse(() => (pRank > cpuRank ? Result.Lose : Result.Win)),
+						Match.when(1, () => (pRank > cpuRank ? Result.Win : Result.Loss)),
+						Match.orElse(() => (pRank > cpuRank ? Result.Loss : Result.Win)),
 					);
 				}),
 		};
