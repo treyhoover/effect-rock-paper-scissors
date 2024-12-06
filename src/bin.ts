@@ -1,7 +1,7 @@
 import { Effect, Layer, Option, Schedule } from "effect";
 import { NodeRuntime } from "@effect/platform-node";
 import { GameService } from "./services/game";
-import { GameResultService } from "./GameResult/service";
+import { GameResultService } from "@/services/game-result";
 
 const EnvLive = Layer.mergeAll(GameService.Default, GameResultService.Default);
 

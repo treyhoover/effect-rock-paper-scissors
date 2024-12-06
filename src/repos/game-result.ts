@@ -1,10 +1,10 @@
 import { Model } from "@effect/sql";
 import { Effect } from "effect";
-import { GameResult } from "./model.js";
-import { SqlLive } from "../lib/Sql.js";
+import { GameResult } from "../models/game-result.js";
+import { SqlLive } from "@/layers/sql.js";
 
 export class GameResultRepo extends Effect.Service<GameResultRepo>()(
-	"GameResult/Repo",
+	"GameResultRepo",
 	{
 		effect: Model.makeRepository(GameResult, {
 			tableName: "game_results",

@@ -1,6 +1,6 @@
 import { Effect, Match } from "effect";
-import { CLIService } from "./cli";
-import { MoveService, type Move } from "./move";
+import { CLIService } from "@/services/cli";
+import { MoveService, type Move } from "@/services/move";
 
 enum Result {
 	Win = "win",
@@ -12,7 +12,7 @@ class GameInputError {
 	readonly _tag = "GameInputError";
 }
 
-export class GameService extends Effect.Service<GameService>()("app/Game", {
+export class GameService extends Effect.Service<GameService>()("GameService", {
 	effect: Effect.gen(function* () {
 		const cli = yield* CLIService;
 		const moveService = yield* MoveService;
@@ -21,12 +21,11 @@ export class GameService extends Effect.Service<GameService>()("app/Game", {
 			getComputerMove: () => moveService.getRandomMove,
 			getPlayerMove: () =>
 				Effect.gen(function* () {
-					const input = yield* cli.prompt(
-						"What is your move? (rock, paper, or scissors)",
-					);
-					const isInvalidMove = !moveService.isValid(input);
+					const input = yield* cli
+						.prompt("What is your move? (rock, paper, or scissors)")
+						.pipe(Effect.map((input) => input.toLowerCase().trim()));
 
-					if (isInvalidMove) {
+					if (!moveService.isValid(input)) {
 						yield* cli.display("Invalid move. Please try again.");
 
 						return yield* Effect.fail(new GameInputError());

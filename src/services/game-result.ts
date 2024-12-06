@@ -1,9 +1,9 @@
 import { SqliteClient } from "@effect/sql-sqlite-node";
 import { Effect, Schema } from "effect";
 import { SqlSchema } from "@effect/sql";
-import { GameResult } from "./model";
-import { SqlLive } from "../lib/Sql";
-import { GameResultRepo } from "./repo";
+import { GameResult } from "@/models/game-result";
+import { SqlLive } from "@/layers/sql";
+import { GameResultRepo } from "@/repos/game-result";
 
 export class GameResultService extends Effect.Service<GameResultService>()(
 	"GameResultService",

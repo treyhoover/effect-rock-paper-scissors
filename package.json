@@ -1,13 +1,13 @@
 {
-	"name": "@template/cli",
+	"name": "effect-rock-paper-scissors",
 	"version": "0.0.0",
 	"type": "module",
 	"packageManager": "pnpm@9.10.0",
 	"license": "MIT",
-	"description": "A basic Effect CLI application",
+	"description": "A basic Effect CLI application for rock paper scissors",
 	"repository": {
 		"type": "git",
-		"url": "<PLACEHOLDER>"
+		"url": "https://github.com/treyhoover/effect-rock-paper-scissors"
 	},
 	"publishConfig": {
 		"access": "public",
